@@ -23,9 +23,10 @@ defmodule DocusignElixirSampleApp.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:docusign, "~> 0.1"},
+      {:docusign, "~> 0.3.3"},
       {:timex, "~> 3.4"},
-      {:hackney, "~> 1.6"}
+      {:oauth2, "~> 2.0", override: true},
+      {:hackney, "~> 1.15 and >= 1.15.2"}
     ]
   end
 
