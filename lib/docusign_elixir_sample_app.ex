@@ -5,6 +5,11 @@ defmodule DocusignElixirSampleApp do
   require Logger
   alias DocuSign.Api
 
+  alias DocuSign.Model.EnvelopeDefinition
+  alias DocuSign.Model.TemplateRole
+  alias DocuSign.Model.EnvelopeRecipientTabs
+  alias DocuSign.Model.Text
+
   @doc """
   Fetches all envelopes younger than 30 days.
   """
@@ -60,6 +65,26 @@ defmodule DocusignElixirSampleApp do
         Logger.error(inspect(error))
         {:error, error}
     end
+  end
+
+  def sign_it() do
+    envelope = %EnvelopeDefinition{
+      templateId: "8ef64464-3d2d-4b85-b642-a9b67799b5ea",
+      templateRoles: [%TemplateRole{
+        roleName: "Aide",
+        email: "superchrisnelson@gmail.com",
+        name: "Chris Nelson",
+        tabs: %EnvelopeRecipientTabs{
+          textTabs: [%Text{
+            tabLabel: "SSN",
+            value: "123-45-6789"
+          }]
+        }
+      }]
+    }
+
+    {:ok, stuff} = Api.Envelopes.envelopes_post_envelopes(connection(), account_id(), envelopeDefinition: envelope)
+    IO.inspect(stuff)
   end
 
   defp connection, do: DocuSign.Connection.new(client: DocuSign.APIClient.client())
